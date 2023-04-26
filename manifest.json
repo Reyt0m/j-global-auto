@@ -1,0 +1,24 @@
+{
+	"manifest_version": 3,
+	"name": "Researcher Contact",
+	"version": "1.0",
+	"description": "Automatically search and contact researchers on jglobal.jst.go.jp",
+	"permissions": ["activeTab", "scripting", "tabs"],
+	"action": {
+	  "icon": {
+		"128": "icon128.png"
+	  }
+	},
+	"background": {
+	  "service_worker": "background_worker.js"
+	},
+	"icons": {
+	  "128": "icon128.png"
+	},
+	"content_scripts": [
+	  {
+		"matches": ["https://jglobal.jst.go.jp/*"],
+		"js": ["content_script.js"]
+	  }
+	]
+  }
