@@ -3,22 +3,47 @@
 	"name": "Researcher Contact",
 	"version": "1.0",
 	"description": "Automatically search and contact researchers on jglobal.jst.go.jp",
-	"permissions": ["activeTab", "scripting", "tabs"],
+	"permissions": [
+		"activeTab",
+		"scripting",
+		"storage",
+		"tabs"
+	],
+	"commands": {
+		"search_researchers": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+Y"
+			},
+			"description": "Activate researcher contact extension"
+		}
+	},
 	"action": {
-	  "icon": {
-		"128": "icon128.png"
-	  }
+		"icon": {
+			"128": "icon128.png"
+		}
 	},
 	"background": {
-	  "service_worker": "background_worker.js"
+		"service_worker": "background_worker.js"
 	},
 	"icons": {
-	  "128": "icon128.png"
+		"128": "icon128.png"
 	},
 	"content_scripts": [
-	  {
-		"matches": ["https://jglobal.jst.go.jp/*"],
-		"js": ["content_script.js"]
-	  }
+		{
+			"matches": [
+				"https://jglobal.jst.go.jp/detail?JGLOBAL_ID=*"
+			],
+			"js": [
+				"content_script.js"
+			]
+		},
+		{
+			"matches": [
+				"https://jglobal.jst.go.jp/mail/researcher*"
+			],
+			"js": [
+				"mail_form.js"
+			]
+		}
 	]
-  }
+}

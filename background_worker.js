@@ -8,10 +8,20 @@ chrome.action.onClicked.addListener(async (tab) => {
 		// タブが完全に読み込まれたらメッセージを送信する
 		chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
 		  if (tabId === existingTab.id && info.status === 'complete') {
+			console.log('send message')
 			chrome.tabs.sendMessage(existingTab.id, { action: 'searchResearchers' });
 			chrome.tabs.onUpdated.removeListener(listener);
 		  }
 		});
+		// すでに開いているページで content_script.js を実行する
+		try {
+			chrome.scripting.executeScript({
+			  target: { tabId: tab.id },
+			  files: ["content_script.js"],
+			});
+		  } catch (error) {
+			console.error(`Error executing script: ${error.message}`);
+		  }
 	  } else {
 		chrome.tabs.create({ url }, (newTab) => {
 		  // タブが完全に読み込まれたらメッセージを送信する
@@ -25,5 +35,3 @@ chrome.action.onClicked.addListener(async (tab) => {
 	  }
 	});
   });
-
-  // ... その他の関数（findTabByUrl）は使用しなくなったため削除します。
