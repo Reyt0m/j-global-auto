@@ -9,34 +9,15 @@
 		"storage",
 		"tabs"
 	],
-	"commands": {
-		"search_researchers": {
-			"suggested_key": {
-				"default": "Ctrl+Shift+Y"
-			},
-			"description": "Activate researcher contact extension"
-		}
-	},
 	"action": {
 		"icon": {
 			"128": "icon128.png"
 		}
 	},
-	"background": {
-		"service_worker": "background_worker.js"
-	},
 	"icons": {
 		"128": "icon128.png"
 	},
 	"content_scripts": [
-		{
-			"matches": [
-				"https://jglobal.jst.go.jp/detail?JGLOBAL_ID=*"
-			],
-			"js": [
-				"content_script.js"
-			]
-		},
 		{
 			"matches": [
 				"https://jglobal.jst.go.jp/mail/researcher*"
