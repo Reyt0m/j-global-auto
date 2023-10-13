@@ -11,7 +11,8 @@ let currentUrl;
 let urlList = [];
 let major;
 let professor;
-let currentIndex = 0;
+let currentIndex;
+let localUrlList = [];
 const yourNameInput = "森田未来";
 const homeUrl = "https://jglobal.jst.go.jp/";
 const researchUrl = "https://jglobal.jst.go.jp/detail?";
@@ -26,6 +27,23 @@ https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901085498106432
 */
 
 currentUrl = window.location.href;
+currentIndex = 0;
+localUrlList = JSON.parse(localStorage.getItem("urlList"));
+
+const moveNextUrl = () => {
+  //   初回のみ、0、かつそれ以降は、次のindexを保存
+  currentIndex = localStorage.getItem("currentIndex");
+  currentIndex =
+    currentIndex == null || currentIndex == "" ? 0 : JSON.parse(currentIndex);
+  // 遷移用のURLリスト
+  localUrlList = JSON.parse(localStorage.getItem("urlList"));
+  // indxの保存
+  currentIndex += 1;
+  localStorage.setItem("currentIndex", currentIndex);
+  // 遷移
+
+  location.href = localUrlList[currentIndex - 1];
+};
 
 if (currentUrl == homeUrl) {
   if (confirm("URLリストを作成しますか？")) {
@@ -40,38 +58,40 @@ if (currentUrl == homeUrl) {
     localStorage.setItem("urlList", JSON.stringify(urlList));
     localStorage.setItem("major", JSON.stringify(major));
   }
-  //   初回のみ、0、かつそれ以降は、次のindexを保存
-  currentIndex = localStorage.getItem("currentIndex");
-  currentIndex =
-    currentIndex == null || currentIndex == "" ? 0 : JSON.parse(currentIndex);
-  // 遷移
-  const localUrlList = JSON.parse(localStorage.getItem("urlList"));
-    // 遷移
-    location.href = localUrlList[currentIndex];
+  moveNextUrl();
 } else if (currentUrl.includes(researchUrl)) {
-	const localUrlList = JSON.parse(localStorage.getItem("urlList"));
-  currentIndex++;
+  const contactBtn = document.querySelector(
+    "#detail_v > div.contents > div > div.contents_in_main > div > div.search_detail_topbox > button"
+  );
+  // URLoverチェック
   if (currentIndex < localUrlList.length) {
-    localStorage.setItem("currentIndex", JSON.stringify(currentIndex));
-    console.log(currentIndex);
-    location.href = localUrlList[currentIndex];
+    if (contactBtn == null) {
+      location.href = localUrlList[currentIndex++];
+      moveNextUrl();
+    }
   } else {
     console.log("End of urlList reached");
   }
+  contactBtn.click();
+} else if (currentUrl.includes(mailUrl)) {
+  // 順番の逆転
+  const backToResearchBtn = document.querySelector(
+    "#researcher_contact_v > div > div > div.btn_center > div > a"
+  );
+  if (backToResearchBtn != null) {
+    moveNextUrl();
+  }
+
+  const sentBtn = document.querySelector(
+    "#researcher_contact_v > div > form > div.btn_center > div > button.btn_l.btn_color_1"
+  );
+  sentBtn.click();
 
   professor = document
     .getElementsByTagName("td")[1]
     .innerHTML.trim()
     .replace(/　/g, "");
-  const pushBtn = document.querySelector(
-    "#detail_v > div.contents > div > div.contents_in_main > div > div.search_detail_topbox > button"
-  );
-  if (pushBtn == null) {
-    location.href = localUrlList[currentIndex++];
-  }
-  pushBtn.click();
-} else if (currentUrl.includes(mailUrl)) {
-  // ここにフォームの値を設定するコードを追加します。
+  major = JSON.parse(localStorage.getItem("major"));
   const yourCompanyNameInput = "株式会社PRES";
   const subjectInput = professor + "先生へ記事監修のご依頼 - 株式会社PRES";
   const messageTextarea =
@@ -113,9 +133,4 @@ if (currentUrl == homeUrl) {
   const sendButton = document.querySelector("#rc_form_confirm");
   sendButton.click();
   console.log("sendButton");
-} else if (currentUrl.includes(mailUrl)) {
-  const sentBtn = document.querySelector(
-    "#researcher_contact_v > div > form > div.btn_center > div > button.btn_l.btn_color_1"
-  );
-  sentBtn.click();
 }
