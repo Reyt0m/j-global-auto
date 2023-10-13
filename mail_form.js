@@ -17,14 +17,6 @@ const yourNameInput = "森田未来";
 const homeUrl = "https://jglobal.jst.go.jp/";
 const researchUrl = "https://jglobal.jst.go.jp/detail?";
 const mailUrl = "https://jglobal.jst.go.jp/mail/researcher";
-/*
-https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901010933262107
-https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901077390402970
-https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901021347989237
-https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901093472221635
-https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901085498106432
-
-*/
 
 currentUrl = window.location.href;
 currentIndex = 0;
